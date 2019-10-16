@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import ApartmentModel
 
-# Register your models here.
+class ApartmentAdmin(admin.ModelAdmin):
+	pass
+
+admin.site.register(ApartmentModel, ApartmentAdmin)
