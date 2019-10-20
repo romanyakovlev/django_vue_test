@@ -8,6 +8,6 @@ class ApartmentSerializer(serializers.ModelSerializer):
         model = ApartmentModel
         fields = [
         	'apartment_price', 'number_of_rooms', 'apartment_floor', 
-        	'year_of_construction', 'apartment_adress',
+        	'year_of_construction', 'apartment_adress', 'id', 'building_floors'
         ]
 
