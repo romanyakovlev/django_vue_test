@@ -4,11 +4,31 @@ from .serializers import ApartmentSerializer
 from django.db.models import F
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import pagination
 
+
+
+class CustomNumberPagination(pagination.PageNumberPagination):
+
+    def get_paginated_response(self, data):
+
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'total_pages': 
+                self.page.paginator.count // self.page_size + 1
+                if self.page.paginator.count % self.page_size != 0 
+                else self.page.paginator.count // self.page_size,
+            'results': data,
+        })
 
 class ApartmentViewSet(viewsets.ModelViewSet):
 
     serializer_class = ApartmentSerializer
+    pagination_class = CustomNumberPagination
 
     def get_queryset(self):
 
@@ -54,10 +74,9 @@ class InitDataView(APIView):
 
         number_of_rooms = ApartmentModel.objects.values_list('number_of_rooms', flat=True)
         years_of_construction = ApartmentModel.objects.values_list('year_of_construction', flat=True)
-        
+
         max_floor = ApartmentModel.objects.aggregate(Max('apartment_floor'))
         min_floor = ApartmentModel.objects.aggregate(Min('apartment_floor'))
-
 
         return Response({
             **max_price,
