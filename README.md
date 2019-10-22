@@ -1,5 +1,8 @@
 # django_vue_test
 
+- db: sqlite
+- user admin - roman:12345
+
 # Installation
 
 ## 1 clone repo
