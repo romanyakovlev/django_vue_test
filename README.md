@@ -22,7 +22,7 @@ python manage.py runserver 5000
 npm install
 ```
 
-## 5 run vue app and got to (asdf)[http://google.com]
+## 5 run vue app and got to [Page](http://localhost:8080/)
 ```sh
-npm install
+npm run serve
 ```
