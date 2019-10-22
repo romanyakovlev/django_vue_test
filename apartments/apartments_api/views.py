@@ -1,11 +1,9 @@
 from .models import ApartmentModel
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, pagination
 from .serializers import ApartmentSerializer
-from django.db.models import F
+from django.db.models import F, Max, Min
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import pagination
-
 
 
 class CustomNumberPagination(pagination.PageNumberPagination):
@@ -60,9 +58,6 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         	queryset = queryset.filter(number_of_rooms__in=number_of_rooms)
      	
         return queryset
-
-from django.db.models import Max, Min
-
 
 
 class InitDataView(APIView):
