@@ -3,25 +3,30 @@
 
     <div v-if="everthing_is_ready">
 
-      не первый/последний этаж <Checkbox :toggle.sync="toggle" @requestApi="getApartmentsList"/>
+      не первый/последний этаж <Checkbox :toggle.sync="toggle"
+      @requestApi="getApartmentsListThrottled"/>
 
-      нижняя цена <InputRange :el_range.sync="low_price" @requestApi="getApartmentsList"
+      нижняя цена <InputRange :el_range.sync="low_price"
+      @requestApi="getApartmentsListThrottled"
       :min-range="selected_low_price" :max_range="selected_high_price"/>
 
-      верхняя цена <InputRange :el_range.sync="high_price" @requestApi="getApartmentsList"
+      верхняя цена <InputRange :el_range.sync="high_price"
+      @requestApi="getApartmentsListThrottled"
       :min-range="selected_low_price" :max_range="selected_high_price"/>
 
-      нижний этаж <InputRange :el_range.sync="low_floor" @requestApi="getApartmentsList"
+      нижний этаж <InputRange :el_range.sync="low_floor"
+      @requestApi="getApartmentsListThrottled"
       :min-range="selected_low_floor" :max_range="selected_high_floor"/>
 
-      верхний этаж <InputRange :el_range.sync="high_floor" @requestApi="getApartmentsList"
+      верхний этаж <InputRange :el_range.sync="high_floor"
+      @requestApi="getApartmentsListThrottled"
       :min-range="selected_low_floor" :max_range="selected_high_floor"/>
 
       <MultiSelect :sel_element.sync="selected_rooms" :arr_els="rooms"
-      @requestApi="getApartmentsList"/>
+      @requestApi="getApartmentsListThrottled"/>
 
       <MultiSelect :sel_element.sync="selected_years" :arr_els="years"
-      @requestApi="getApartmentsList"/>
+      @requestApi="getApartmentsListThrottled"/>
 
     </div>
 
@@ -41,6 +46,7 @@ import InputRange from '@/components/InputRange.vue';
 import MultiSelect from '@/components/MultiSelect.vue';
 import ApartmentsList from '@/components/ApartmentsList.vue';
 import Pagination from '@/components/Pagination.vue';
+import throttle from '@/utils/throttle';
 
 export default {
   name: 'ApartmentsSearch',
@@ -129,6 +135,12 @@ export default {
   },
   created() {
     this.getSearchParams();
+  },
+  computed: {
+    getApartmentsListThrottled() {
+      const DELAY = 1000;
+      return throttle(this.getApartmentsList, DELAY);
+    },
   },
   components: {
     Checkbox,
